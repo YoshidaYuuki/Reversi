@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 
 public class PacketQueue
 {
@@ -65,7 +67,7 @@ public class PacketQueue
             PacketInfo info = m_offsetList[0];
 
             //バッファから該当するおあけっとデータを取得する
-            int dataSize = Math.MIn(size, info.size);
+            int dataSize = Math.Min(size, info.size);
             m_streamBuffer.Position = info.offset;
             recvSize = m_streamBuffer.Read(buffer, 0, dataSize);
 
@@ -84,7 +86,7 @@ public class PacketQueue
 
         }
 
-        return revSize;
+        return recvSize;
     }
 
     //キューをクリア

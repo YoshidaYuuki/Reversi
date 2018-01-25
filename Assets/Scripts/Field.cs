@@ -6,6 +6,8 @@ using UnityEngine.UI;
 // フィールド
 public class Field : MonoBehaviour {
 
+    public RectTransform stone;
+
     private RectTransform rectTransform;
     private Vector2 canvasSize;
 
@@ -24,9 +26,7 @@ public class Field : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(0))
         {
-            Vector3 p = Input.mousePosition;
-
-            Debug.Log(ToIndex(p));
+            stone.localPosition = ToWorld(ToIndex(Input.mousePosition));
         }
     }
 
@@ -52,5 +52,21 @@ public class Field : MonoBehaviour {
         vi.x = vi.x + (Logic.c_sizeOfField / 2);
         vi.y = -vi.y + (Logic.c_sizeOfField / 2 - 1);
         return vi;
+    }
+    
+    // インデックス->ワールド座標
+    Vector3 ToWorld( Vector2Int index )
+    {
+        Vector3 v = new Vector3();
+
+        // 配列用のインデックスを変換
+        v.x = index.x - (Logic.c_sizeOfField / 2) + 0.5f;
+        v.y = -index.y + (Logic.c_sizeOfField / 2 - 1) + 0.5f;
+
+        // ワールド座標へ変換
+        v.x = v.x * (rectTransform.sizeDelta.x / Logic.c_sizeOfField);
+        v.y = v.y * (rectTransform.sizeDelta.y / Logic.c_sizeOfField);
+
+        return v;
     }
 }

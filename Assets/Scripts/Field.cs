@@ -6,32 +6,59 @@ using UnityEngine.UI;
 // フィールド
 public class Field : MonoBehaviour {
 
-    public RectTransform stone;
+    public float width { get { return rectTransform.sizeDelta.x; } }
+    public float height { get { return rectTransform.sizeDelta.y; } }
 
+    [SerializeField]
+    private GameObject stonePrefab;
+
+    private GameObject[,] stone = new GameObject[Logic.c_sizeOfField, Logic.c_sizeOfField];
     private RectTransform rectTransform;
     private Vector2 canvasSize;
 
-    private Logic logic;
-
-    void Awake()
+    private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         CanvasScaler cs = transform.parent.GetComponent<CanvasScaler>();
         canvasSize = cs.referenceResolution;
-
-        logic = transform.Find("Logic").GetComponent<Logic>();
     }
-	
-	void Update () {
 
-        if (Input.GetMouseButtonDown(0))
+    void Start()
+    {
+
+    }
+
+    void Update()
+    {
+
+    }
+
+    public void SetStone( int x, int y, bool isBlack )
+    {
+        GameObject g = stone[x, y];
+
+        if (g == null)
         {
-            stone.localPosition = ToWorld(ToIndex(Input.mousePosition));
+            g = Instantiate(stonePrefab, this.transform);
+        }
+
+        g.GetComponent<RectTransform>().localPosition = ToWorld(x, y);
+        g.GetComponent<Stone>().isBlack = isBlack;
+        stone[x, y] = g;
+    }
+
+    public void ClearStone()
+    {
+        stone.Initialize();
+
+        foreach( Transform t in transform )
+        {
+            Destroy(t.gameObject);
         }
     }
 
     // マウス座標->オセロインデックス
-    Vector2Int ToIndex( Vector3 mousePosition )
+    public Vector2Int ToIndex(Vector3 mousePosition)
     {
         Vector3 p = mousePosition;
 
@@ -45,27 +72,27 @@ public class Field : MonoBehaviour {
         Vector2Int vi = new Vector2Int();
 
         // 座標をマス目の座標へ
-        vi.x = Mathf.FloorToInt(p.x / (rectTransform.sizeDelta.x / Logic.c_sizeOfField));
-        vi.y = Mathf.FloorToInt(p.y / (rectTransform.sizeDelta.y / Logic.c_sizeOfField));
+        vi.x = Mathf.FloorToInt(p.x / (width / Logic.c_sizeOfField));
+        vi.y = Mathf.FloorToInt(p.y / (height / Logic.c_sizeOfField));
 
         // 左上を[0, 0]になるようにインデックスを変換
         vi.x = vi.x + (Logic.c_sizeOfField / 2);
         vi.y = -vi.y + (Logic.c_sizeOfField / 2 - 1);
         return vi;
     }
-    
+
     // インデックス->ワールド座標
-    Vector3 ToWorld( Vector2Int index )
+    public Vector3 ToWorld(int x, int y)
     {
         Vector3 v = new Vector3();
 
         // 配列用のインデックスを変換
-        v.x = index.x - (Logic.c_sizeOfField / 2) + 0.5f;
-        v.y = -index.y + (Logic.c_sizeOfField / 2 - 1) + 0.5f;
+        v.x = x - (Logic.c_sizeOfField / 2) + 0.5f;
+        v.y = -y + (Logic.c_sizeOfField / 2 - 1) + 0.5f;
 
         // ワールド座標へ変換
-        v.x = v.x * (rectTransform.sizeDelta.x / Logic.c_sizeOfField);
-        v.y = v.y * (rectTransform.sizeDelta.y / Logic.c_sizeOfField);
+        v.x = v.x * (width / Logic.c_sizeOfField);
+        v.y = v.y * (height / Logic.c_sizeOfField);
 
         return v;
     }

@@ -7,7 +7,7 @@ public class Game : MonoBehaviour {
     private Logic logic;
     private Field field;
 
-    private bool black;
+    private bool isBlack = true;
 
 	void Start () {
         logic = transform.Find("Logic").GetComponent<Logic>();
@@ -15,23 +15,24 @@ public class Game : MonoBehaviour {
 
         /* 初期配置 */
 
-        //SetStone(Logic.c_sizeOfField / 2 + 1, Logic.c_sizeOfField / 2 - 1, true);
-        //SetStone(Logic.c_sizeOfField / 2 - 1, Logic.c_sizeOfField / 2 + 1, false);
-        //SetStone(Logic.c_sizeOfField / 2 + 1, Logic.c_sizeOfField / 2 + 1, true);
-        //SetStone(Logic.c_sizeOfField / 2 - 1, Logic.c_sizeOfField / 2 - 1, false);
+        logic.Set(Logic.c_sizeOfField / 2 - 1,  Logic.c_sizeOfField / 2 - 1,    false);
+        logic.Set(Logic.c_sizeOfField / 2,      Logic.c_sizeOfField / 2 - 1,    true);
+        logic.Set(Logic.c_sizeOfField / 2 - 1,  Logic.c_sizeOfField / 2,        true);
+        logic.Set(Logic.c_sizeOfField / 2,      Logic.c_sizeOfField / 2,        false);
     }
 
     void Update () {
         if (Input.GetMouseButtonDown(0))
         {
             Vector2Int v = field.ToIndex(Input.mousePosition);
-            logic.Set(v.x, v.y, black);
-        }
+            if (!logic.CheckSet(v.x, v.y, isBlack))
+            {
+                Debug.Log("そこには置けないよ");
+                return;
+            }
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            black = !black;
-            Debug.Log("NOW SIDE = " + ( black ? "BLACK" : "WHITE" ));
+            isBlack = !isBlack;
+            Debug.Log("NOW SIDE = " + (isBlack ? "BLACK" : "WHITE"));
         }
 
         if (Input.GetKeyDown(KeyCode.Backspace))

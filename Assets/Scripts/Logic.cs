@@ -29,11 +29,60 @@ public class Logic : MonoBehaviour {
 
     public void Set( int x, int y, bool isBlack )
     {
-        if (x < 0 || x >= c_sizeOfField) return;
-        if (y < 0 || y >= c_sizeOfField) return;
-
         fieldState[x, y] = isBlack ? State.Black : State.White;
         field.SetStone(x, y, isBlack);
+    }
+
+    public bool CheckSet( int x, int y, bool isBlack )
+    {
+        bool result = false;
+
+        if (x < 0 || x >= c_sizeOfField) return false;
+        if (y < 0 || y >= c_sizeOfField) return false;
+        if (fieldState[x, y] != State.None) return false;
+
+        result |= Turn(x, y, +0, -1, 0, isBlack); // 上
+        result |= Turn(x, y, +1, -1, 0, isBlack); // 右上
+        result |= Turn(x, y, +1, +0, 0, isBlack); // 右
+        result |= Turn(x, y, +1, +1, 0, isBlack); // 右下
+        result |= Turn(x, y, +0, +1, 0, isBlack); // 下
+        result |= Turn(x, y, -1, +1, 0, isBlack); // 左下
+        result |= Turn(x, y, -1, +0, 0, isBlack); // 左
+        result |= Turn(x, y, -1, -1, 0, isBlack); // 左上
+
+        if (result)
+        {
+            Set(x, y, isBlack);
+        }
+        return result;
+    }
+
+    public bool Turn( int x, int y, int ofsX, int ofsY, int count, bool isBlack )
+    {
+        x += ofsX;
+        y += ofsY;
+
+        if (x < 0 || x >= c_sizeOfField) return false;
+        if (y < 0 || y >= c_sizeOfField) return false;
+
+        State s = fieldState[x, y];
+        if (s == State.None)
+        {
+            return false;
+        }
+
+        if (s == (isBlack ? State.Black : State.White))
+        {
+            return count > 0;
+        }
+
+        if (Turn(x, y, ofsX, ofsY, count + 1, isBlack) == true)
+        {
+            Set(x, y, isBlack);
+            return true;
+        }
+
+        return false;
     }
 
     public void Clear()

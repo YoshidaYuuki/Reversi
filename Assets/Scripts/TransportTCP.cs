@@ -28,29 +28,41 @@ public class TransportTCP : MonoBehaviour
 
     private static int s_mtu = 1400;
 
-    // Use this for initialization
-    void Start()
-    {
+    //// Use this for initialization
+    //void Start()
+    //{
 
-    }
+    //}
 
-    // Update is called once per frame
-    void Update()
-    {
+    //// Update is called once per frame
+    //void Update()
+    //{
 
-    }
+    //}
 
     public bool StartServer(int port, int connectionNum)
     {
-        //リスニングソケット生成
-        m_listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        m_listener.Bind(new IPEndPoint(IPAddress.Any, port));
-        m_listener.Listen(connectionNum);
+        Debug.Log("StartServer called.!");
+
+        // リスニングソケットを生成します.
+        try
+        {
+            // ソケットを生成します.
+            m_listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            // 使用するポート番号を割り当てます.
+            m_listener.Bind(new IPEndPoint(IPAddress.Any, port));
+            // 待ち受けを開始します.
+            m_listener.Listen(connectionNum);
+        }
+        catch
+        {
+            Debug.Log("StartServer fail");
+            return false;
+        }
+
         m_isServer = true;
 
-        LaunchThread();
-
-        return true;
+        return LaunchThread();
     }
 
     public void StopServer()
@@ -63,17 +75,48 @@ public class TransportTCP : MonoBehaviour
 
     public bool Connect(string address, int port)
     {
-        m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        m_socket.NoDelay = true;
-        m_socket.Connect(address, port);
-        m_socket.SendBufferSize = 0;
-        m_isConnected = true;
+        Debug.Log("TransportTCP connect called.");
 
-        
+        if (m_listener != null)
+        {
+            return false;
+        }
 
-        LaunchThread();
+        bool ret = false;
+        try
+        {
+            m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            m_socket.NoDelay = true;
+            m_socket.Connect(address, port);
+            ret = LaunchThread();
+        }
+        catch
+        {
+            m_socket = null;
+        }
 
-        return true;
+        if (ret == true)
+        {
+            m_isConnected = true;
+            Debug.Log("Connection success.");
+        }
+        else
+        {
+            m_isConnected = false;
+            Debug.Log("Connect fail");
+        }
+
+        if (m_handler != null)
+        {
+            // 接続結果を通知します.
+            NetEventState state = new NetEventState();
+            state.type = NetEventType.Connect;
+            state.result = (m_isConnected == true) ? NetEventResult.Success : NetEventResult.Failure;
+            m_handler(state);
+            Debug.Log("event handler called");
+        }
+
+        return m_isConnected;
     }
 
     public void Disconnect()
@@ -152,7 +195,7 @@ public class TransportTCP : MonoBehaviour
                 //受信処理
                 DispatchReceive();
             }
-            
+            Thread.Sleep(5);
         }
     }
 

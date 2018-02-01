@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // オセロの石
-public class Stone : MonoBehaviour {
+public class Stone : MonoBehaviour
+{
 
     private bool _isBlack;
     public bool isBlack
@@ -23,14 +24,29 @@ public class Stone : MonoBehaviour {
     [SerializeField]
     private Sprite[] stoneImage = new Sprite[2];
 
+    private Animator turnAnimator;
     private Image image;
 
-	void Awake () {
+    void Awake()
+    {
         image = GetComponent<Image>();
         isBlack = true;
-	}
-	
-	void Update () {
-		
-	}
+
+        turnAnimator = GetComponent<Animator>();
+    }
+
+    void Update()
+    {
+        
+    }
+
+    public void Turn()
+    {
+        turnAnimator.SetTrigger("Turn");
+    }
+
+    public void ChangeColor()
+    {
+        isBlack = !isBlack;
+    }
 }

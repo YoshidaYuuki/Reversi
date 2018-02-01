@@ -40,11 +40,14 @@ public class Field : MonoBehaviour {
         if (g == null)
         {
             g = Instantiate(stonePrefab, this.transform);
+            g.GetComponent<RectTransform>().localPosition = ToWorld(x, y);
+    	    g.GetComponent<Stone>().isBlack = isBlack;
+	        stone[x, y] = g;
         }
-
-        g.GetComponent<RectTransform>().localPosition = ToWorld(x, y);
-        g.GetComponent<Stone>().isBlack = isBlack;
-        stone[x, y] = g;
+        else
+        {
+        	g.GetComponent<Stone>().Turn();
+        }
     }
 
     public void ClearStone()

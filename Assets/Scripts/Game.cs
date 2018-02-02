@@ -32,6 +32,7 @@ public class Game : MonoBehaviour {
             }
 
             isBlack = !isBlack;
+            Debug.Log("B/W = " + logic.numOfBlack + "/" + logic.numOfWhite);
             Debug.Log("NOW SIDE = " + (isBlack ? "BLACK" : "WHITE"));
         }
 

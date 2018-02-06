@@ -389,6 +389,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stonePrefab: {fileID: 1311763422961284, guid: f2afe3c579a3b4844825123a1606b353,
     type: 2}
+  delayFrame: 0.1
 --- !u!114 &651265956
 MonoBehaviour:
   m_ObjectHideFlags: 0

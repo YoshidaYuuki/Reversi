@@ -7,7 +7,9 @@ public class Game : MonoBehaviour {
     private Logic logic;
     private Field field;
 
+
     private bool isBlack = true;
+
 
 	void Start () {
         logic = transform.Find("Logic").GetComponent<Logic>();
@@ -25,11 +27,13 @@ public class Game : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
         {
             Vector2Int v = field.ToIndex(Input.mousePosition);
-            if (!logic.CheckSet(v.x, v.y, isBlack))
+            if (!logic.Check(v.x, v.y, isBlack))
             {
                 Debug.Log("そこには置けないよ");
                 return;
             }
+
+            logic.SetStack(isBlack);
 
             isBlack = !isBlack;
             Debug.Log("B/W = " + logic.numOfBlack + "/" + logic.numOfWhite);

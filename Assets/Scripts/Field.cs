@@ -9,12 +9,21 @@ public class Field : MonoBehaviour {
     public float width { get { return rectTransform.sizeDelta.x; } }
     public float height { get { return rectTransform.sizeDelta.y; } }
 
+
     [SerializeField]
     private GameObject stonePrefab;
 
+
     private GameObject[,] stone = new GameObject[Logic.c_sizeOfField, Logic.c_sizeOfField];
+
+
     private RectTransform rectTransform;
     private Vector2 canvasSize;
+
+
+    [SerializeField]
+    private float delayFrame;
+
 
     private void Awake()
     {
@@ -33,7 +42,7 @@ public class Field : MonoBehaviour {
 
     }
 
-    public void SetStone( int x, int y, bool isBlack )
+    public void SetStone( int x, int y, bool isBlack, int depth = 0 )
     {
         GameObject g = stone[x, y];
 
@@ -46,7 +55,7 @@ public class Field : MonoBehaviour {
         }
         else
         {
-        	g.GetComponent<Stone>().Turn();
+            g.GetComponent<Stone>().Turn(depth * delayFrame);
         }
     }
 

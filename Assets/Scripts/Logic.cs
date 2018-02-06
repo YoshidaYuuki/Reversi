@@ -13,18 +13,30 @@ public class Logic : MonoBehaviour {
         White
     };
 
+
     [SerializeField]
     public const int c_sizeOfField = 8;
     public int numOfBlack { get { return _numOfBlack; } }
     public int numOfWhite { get { return _numOfWhite; } }
 
+
     [SerializeField]
     private Field field;
-
     private State[,] fieldState = new State[c_sizeOfField, c_sizeOfField];
-    private int _numOfBlack, _numOfWhite;
+
 
     private Text black, white;
+    private int _numOfBlack, _numOfWhite;
+
+
+    public struct TurnStack
+    {
+        public int x, y;
+        public int distance;
+        public TurnStack( int x, int y, int distance ) { this.x = x; this.y = y; this.distance = distance; }
+    }
+    private Stack<TurnStack> turnStack = new Stack<TurnStack>();
+
 
     void Start () {
         black = transform.Find("Black").GetComponent<Text>();
@@ -36,7 +48,7 @@ public class Logic : MonoBehaviour {
         white.text = _numOfWhite.ToString();
 	}
 
-    public void Set( int x, int y, bool isBlack )
+    public void Set( int x, int y, bool isBlack, int depth = 0 )
     {
         switch (fieldState[x, y])
         {
@@ -60,12 +72,22 @@ public class Logic : MonoBehaviour {
         }
 
         fieldState[x, y] = isBlack ? State.Black : State.White;
-        field.SetStone(x, y, isBlack);
+        field.SetStone(x, y, isBlack, depth);
     }
 
-    public bool CheckSet( int x, int y, bool isBlack )
+    public void SetStack( bool isBlack )
+    {
+        foreach(TurnStack t in turnStack)
+        {
+            Set(t.x, t.y, isBlack, t.distance);
+        }
+    }
+
+    public bool Check( int x, int y, bool isBlack )
     {
         bool result = false;
+
+        turnStack.Clear();
 
         if (x < 0 || x >= c_sizeOfField) return false;
         if (y < 0 || y >= c_sizeOfField) return false;
@@ -82,7 +104,7 @@ public class Logic : MonoBehaviour {
 
         if (result)
         {
-            Set(x, y, isBlack);
+            turnStack.Push(new TurnStack(x, y, 0));
         }
         return result;
     }
@@ -108,7 +130,7 @@ public class Logic : MonoBehaviour {
 
         if (Turn(x, y, ofsX, ofsY, count + 1, isBlack) == true)
         {
-            Set(x, y, isBlack);
+            turnStack.Push(new TurnStack(x, y, count));
             return true;
         }
 

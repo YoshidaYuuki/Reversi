@@ -21,11 +21,18 @@ public class Stone : MonoBehaviour
         }
     }
 
+
     [SerializeField]
     private Sprite[] stoneImage = new Sprite[2];
 
+
     private Animator turnAnimator;
     private Image image;
+
+
+    private float turnDelayTime;
+    private bool isDelayCounted;
+
 
     void Awake()
     {
@@ -37,15 +44,25 @@ public class Stone : MonoBehaviour
 
     void Update()
     {
-        
+        if (isDelayCounted)
+        {
+            turnDelayTime -= Time.deltaTime;
+            if (turnDelayTime <= 0)
+            {
+                isDelayCounted = false;
+
+                turnAnimator.SetTrigger("Turn");
+            }
+        }
     }
 
-    public void Turn()
+    public void Turn(float delay = 0.0f)
     {
-        turnAnimator.SetTrigger("Turn");
+        turnDelayTime = delay;
+        isDelayCounted = true;
     }
 
-    public void ChangeColor()
+    public void TurnAnimationEvent()
     {
         isBlack = !isBlack;
     }

@@ -11,7 +11,7 @@ public class Field : MonoBehaviour {
 
 
     [SerializeField]
-    private GameObject stonePrefab;
+    private GameObject stonePrefab = null;
 
 
     private GameObject[,] stone = new GameObject[Logic.c_sizeOfField, Logic.c_sizeOfField];
@@ -22,7 +22,7 @@ public class Field : MonoBehaviour {
 
 
     [SerializeField]
-    private float delayFrame;
+    private float delayFrame = 0;
 
 
     private void Awake()
@@ -42,7 +42,7 @@ public class Field : MonoBehaviour {
 
     }
 
-    public void SetStone( int x, int y, bool isBlack, int depth = 0 )
+    public void SetStone(int x, int y, bool isBlack)
     {
         GameObject g = stone[x, y];
 
@@ -50,12 +50,22 @@ public class Field : MonoBehaviour {
         {
             g = Instantiate(stonePrefab, this.transform);
             g.GetComponent<RectTransform>().localPosition = ToWorld(x, y);
-    	    g.GetComponent<Stone>().isBlack = isBlack;
-	        stone[x, y] = g;
+            g.GetComponent<Stone>().isBlack = isBlack;
+            stone[x, y] = g;
         }
         else
         {
-            g.GetComponent<Stone>().Turn(depth * delayFrame);
+            g.GetComponent<Stone>().isBlack = isBlack;
+        }
+    }
+
+    public void TurnStone( int x, int y, Vector3 axis, int depth = 0)
+    {
+        GameObject g = stone[x, y];
+
+        if (g != null)
+        {
+            g.GetComponent<Stone>().Turn(axis, depth * delayFrame);
         }
     }
 

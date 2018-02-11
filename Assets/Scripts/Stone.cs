@@ -26,10 +26,11 @@ public class Stone : MonoBehaviour
     private Sprite[] stoneImage = new Sprite[2];
 
 
-    private Animator turnAnimator;
+    private Spin spinAnimation;
     private Image image;
 
 
+    private Vector3 axis;
     private float turnDelayTime;
     private bool isDelayCounted;
 
@@ -39,7 +40,7 @@ public class Stone : MonoBehaviour
         image = GetComponent<Image>();
         isBlack = true;
 
-        turnAnimator = GetComponent<Animator>();
+        spinAnimation = GetComponent<Spin>();
     }
 
     void Update()
@@ -51,13 +52,14 @@ public class Stone : MonoBehaviour
             {
                 isDelayCounted = false;
 
-                turnAnimator.SetTrigger("Turn");
+                spinAnimation.Play(axis);
             }
         }
     }
 
-    public void Turn(float delay = 0.0f)
+    public void Turn(Vector3 axis, float delay = 0.0f)
     {
+        this.axis = axis;
         turnDelayTime = delay;
         isDelayCounted = true;
     }

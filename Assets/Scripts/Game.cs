@@ -17,10 +17,10 @@ public class Game : MonoBehaviour {
 
         /* 初期配置 */
 
-        logic.Set(Logic.c_sizeOfField / 2 - 1,  Logic.c_sizeOfField / 2 - 1,    false);
-        logic.Set(Logic.c_sizeOfField / 2,      Logic.c_sizeOfField / 2 - 1,    true);
-        logic.Set(Logic.c_sizeOfField / 2 - 1,  Logic.c_sizeOfField / 2,        true);
-        logic.Set(Logic.c_sizeOfField / 2,      Logic.c_sizeOfField / 2,        false);
+        logic.Set(Logic.c_sizeOfField / 2 - 1, Logic.c_sizeOfField / 2 - 1, false);
+        logic.Set(Logic.c_sizeOfField / 2, Logic.c_sizeOfField / 2 - 1, true);
+        logic.Set(Logic.c_sizeOfField / 2 - 1, Logic.c_sizeOfField / 2, true);
+        logic.Set(Logic.c_sizeOfField / 2, Logic.c_sizeOfField / 2, false);
     }
 
     void Update () {

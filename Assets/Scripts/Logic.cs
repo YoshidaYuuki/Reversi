@@ -21,7 +21,7 @@ public class Logic : MonoBehaviour {
 
 
     [SerializeField]
-    private Field field;
+    private Field field = null;
     private State[,] fieldState = new State[c_sizeOfField, c_sizeOfField];
 
 
@@ -32,8 +32,15 @@ public class Logic : MonoBehaviour {
     public struct TurnStack
     {
         public int x, y;
+        public Vector3 axis;
         public int distance;
-        public TurnStack( int x, int y, int distance ) { this.x = x; this.y = y; this.distance = distance; }
+        public TurnStack( int x, int y, Vector3 axis, int distance = 0 )
+        {
+            this.x = x;
+            this.y = y;
+            this.axis = axis;
+            this.distance = distance;
+        }
     }
     private Stack<TurnStack> turnStack = new Stack<TurnStack>();
 
@@ -48,14 +55,27 @@ public class Logic : MonoBehaviour {
         white.text = _numOfWhite.ToString();
 	}
 
-    public void Set( int x, int y, bool isBlack, int depth = 0 )
+    public void Set(int x, int y, bool isBlack)
+    {
+        if (fieldState[x, y] != State.None)
+        {
+            return;
+        }
+
+        _numOfBlack = isBlack ? _numOfBlack + 1 : _numOfBlack;
+        _numOfWhite = !isBlack ? _numOfWhite + 1 : _numOfWhite;
+
+        fieldState[x, y] = isBlack ? State.Black : State.White;
+        field.SetStone(x, y, isBlack);
+    }
+
+    public void Set( int x, int y, bool isBlack, Vector3 axis, int depth = 0 )
     {
         switch (fieldState[x, y])
         {
             case State.None:
-                _numOfBlack = isBlack  ? _numOfBlack + 1 : _numOfBlack;
-                _numOfWhite = !isBlack ? _numOfWhite + 1 : _numOfWhite;
-                break;
+                Set(x, y, isBlack);
+                return;
             case State.Black:
                 _numOfBlack--;
                 _numOfWhite++;
@@ -72,14 +92,14 @@ public class Logic : MonoBehaviour {
         }
 
         fieldState[x, y] = isBlack ? State.Black : State.White;
-        field.SetStone(x, y, isBlack, depth);
+        field.TurnStone(x, y, axis, depth);
     }
 
     public void SetStack( bool isBlack )
     {
         foreach(TurnStack t in turnStack)
         {
-            Set(t.x, t.y, isBlack, t.distance);
+            Set(t.x, t.y, isBlack, t.axis, t.distance);
         }
     }
 
@@ -104,7 +124,7 @@ public class Logic : MonoBehaviour {
 
         if (result)
         {
-            turnStack.Push(new TurnStack(x, y, 0));
+            turnStack.Push(new TurnStack(x, y, Vector3.zero));
         }
         return result;
     }
@@ -130,7 +150,7 @@ public class Logic : MonoBehaviour {
 
         if (Turn(x, y, ofsX, ofsY, count + 1, isBlack) == true)
         {
-            turnStack.Push(new TurnStack(x, y, count));
+            turnStack.Push(new TurnStack(x, y, new Vector3( ofsX, -ofsY, 0 ).normalized, count));
             return true;
         }
 

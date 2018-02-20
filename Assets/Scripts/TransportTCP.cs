@@ -28,11 +28,14 @@ public class TransportTCP : MonoBehaviour
 
     private static int s_mtu = 1400;
 
-    //// Use this for initialization
-    //void Start()
-    //{
+    // Use this for initialization
+    void Start()
+    {
+        DontDestroyOnLoad(this);
 
-    //}
+        m_isServer = false;
+        m_isConnected = false;
+    }
 
     //// Update is called once per frame
     //void Update()
@@ -253,6 +256,17 @@ public class TransportTCP : MonoBehaviour
         }
     }
 
+    // サーバか確認.
+    public bool IsServer()
+    {
+        return m_isServer;
+    }
+
+    // 接続確認.
+    public bool IsConnected()
+    {
+        return m_isConnected;
+    }
 
 }
 

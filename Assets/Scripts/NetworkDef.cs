@@ -23,3 +23,16 @@ public class NetEventState
     public NetEventResult result;
 }
 
+public enum DataType
+{
+    DATA_TYPE_MATCHING = 0,
+    DATA_TYPE_COMMAND = 1
+}
+
+public class DataPack
+{
+    public DataType type;
+    public string command;
+}
+
+

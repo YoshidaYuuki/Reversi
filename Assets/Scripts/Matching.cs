@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using UnityEngine.SceneManagement;
 
 public class Matching : MonoBehaviour {
 
@@ -26,12 +27,30 @@ public class Matching : MonoBehaviour {
         {
             string message = System.Text.Encoding.UTF8.GetString(buffer);
             Debug.Log("Recv data:" + message);
+
+            switch(message)
+            {
+                case "connect":
+                    {
+                        
+                        break;
+                    }
+
+            }
+
+            Debug.Log(message);
+            if(networkObj.GetComponent<TransportTCP>().IsConnected() == true)
+            {
+                SceneManager.LoadScene("Game");
+            }
         }
     }
 
     public void CreateServer()
     {
         transport.StartServer(25252, 1);
+        byte[] buffer = System.Text.Encoding.UTF8.GetBytes("connect");
+        networkObj.GetComponent<TransportTCP>().Send(buffer, buffer.Length);
     }
 
     public void CreateClient()
@@ -39,7 +58,7 @@ public class Matching : MonoBehaviour {
         transport.Connect("127.0.0.1", 25252);
         Debug.Log("connect");
 
-        byte[] buffer = System.Text.Encoding.UTF8.GetBytes("HLSY");
+        byte[] buffer = System.Text.Encoding.UTF8.GetBytes("connect");
         networkObj.GetComponent<TransportTCP>().Send(buffer, buffer.Length);
     }
 }

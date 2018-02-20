@@ -1,9 +1,19 @@
 fileFormatVersion: 2
 guid: f38fcfcc3f25b5444a9d7731d2ab4cce
-timeCreated: 1518513856
+timeCreated: 1519108970
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: UI_Num_0
+    21300002: UI_Num_1
+    21300004: UI_Num_2
+    21300006: UI_Num_3
+    21300008: UI_Num_4
+    21300010: UI_Num_5
+    21300012: UI_Num_6
+    21300014: UI_Num_7
+    21300016: UI_Num_8
+    21300018: UI_Num_9
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -40,7 +50,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -65,9 +75,158 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: UI_Num_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 59
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_Num_1
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 2
+        width: 42
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_Num_2
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 2
+        width: 60
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_Num_3
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 0
+        width: 60
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_Num_4
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 2
+        width: 64
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_Num_5
+      rect:
+        serializedVersion: 2
+        x: 332
+        y: 0
+        width: 61
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_Num_6
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 0
+        width: 60
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_Num_7
+      rect:
+        serializedVersion: 2
+        x: 467
+        y: 2
+        width: 59
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_Num_8
+      rect:
+        serializedVersion: 2
+        x: 533
+        y: 0
+        width: 60
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: UI_Num_9
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 0
+        width: 60
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
     outline: []
     physicsShape: []
   spritePackingTag: 

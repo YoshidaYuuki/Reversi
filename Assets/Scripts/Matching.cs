@@ -4,11 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Matching : MonoBehaviour {
 
     private TransportTCP transport;
     public GameObject networkObj;
+    public GameObject textBox;
 
     // Use this for initialization
     void Start () {
@@ -55,7 +57,8 @@ public class Matching : MonoBehaviour {
 
     public void CreateClient()
     {
-        transport.Connect("127.0.0.1", 25252);
+        transport.Connect(textBox.GetComponent<Text>().text, 25252);
+        Debug.Log("connectadd" + textBox.GetComponent<Text>().text);
         Debug.Log("connect");
 
         byte[] buffer = System.Text.Encoding.UTF8.GetBytes("connect");

@@ -28,6 +28,8 @@ public class TransportTCP : MonoBehaviour
 
     private static int s_mtu = 1400;
 
+    private IPAddress addr_arr;
+
     // Use this for initialization
     void Start()
     {
@@ -35,6 +37,18 @@ public class TransportTCP : MonoBehaviour
 
         m_isServer = false;
         m_isConnected = false;
+
+        // ホスト名を取得する
+        string hostname = Dns.GetHostName();
+        Debug.Log("hostname:" + hostname);
+
+        // ホスト名からIPアドレスを取得する
+        IPAddress[] adrList = Dns.GetHostAddresses(hostname);
+        foreach (IPAddress address in adrList)
+        {
+            Debug.Log(address.ToString());
+        }
+        addr_arr = adrList[1];
     }
 
     //// Update is called once per frame
@@ -267,6 +281,10 @@ public class TransportTCP : MonoBehaviour
     {
         return m_isConnected;
     }
-
+    
+    public void GetIPAddress(ref IPAddress addr )
+    {
+        addr = addr_arr;
+    }
 }
 

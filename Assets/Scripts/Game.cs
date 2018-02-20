@@ -13,7 +13,9 @@ public class Game : MonoBehaviour {
 	[SerializeField]
 	private Text countWhite = null;
 
+    private bool isChange = false;
     private bool isBlack = true;
+
 
 
 	void Start () {
@@ -29,28 +31,40 @@ public class Game : MonoBehaviour {
     }
 
     void Update () {
-        if (Input.GetMouseButtonDown(0))
+
+        Operation();
+
+        if (isChange)
         {
-            Vector2Int v = field.ToIndex(Input.mousePosition);
-            if (!logic.Check(v.x, v.y, isBlack))
-            {
-                Debug.Log("そこには置けないよ");
-                return;
-            }
-
-            logic.SetStack(isBlack);
-
             isBlack = !isBlack;
-            Debug.Log("B/W = " + logic.numOfBlack + "/" + logic.numOfWhite);
             Debug.Log("NOW SIDE = " + (isBlack ? "BLACK" : "WHITE"));
-        }
 
-        if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            logic.Clear();
+            isChange = false;
         }
         
         countBlack.text = logic.numOfBlack.ToString();
         countWhite.text = logic.numOfWhite.ToString();
 	}
+
+    void Operation()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2Int v = field.ToIndex(Input.mousePosition);
+            if (!logic.Check(v.x, v.y, isBlack))
+            {
+                return;
+            }
+
+            logic.SetStack(isBlack);
+
+            isChange = true;
+        }
+    }
+
+    void Pass()
+    {
+        Debug.Log((isBlack ? "黒" : "白") + "がパスしました");
+        isChange = true;
+    }
 }

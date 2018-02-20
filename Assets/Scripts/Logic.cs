@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 // アルゴリズム
 public class Logic : MonoBehaviour {
@@ -18,15 +17,12 @@ public class Logic : MonoBehaviour {
     public const int c_sizeOfField = 8;
     public int numOfBlack { get { return _numOfBlack; } }
     public int numOfWhite { get { return _numOfWhite; } }
+    private int _numOfBlack, _numOfWhite;
 
 
     [SerializeField]
     private Field field = null;
     private State[,] fieldState = new State[c_sizeOfField, c_sizeOfField];
-
-
-    private Text black, white;
-    private int _numOfBlack, _numOfWhite;
 
 
     public struct TurnStack
@@ -46,13 +42,11 @@ public class Logic : MonoBehaviour {
 
 
     void Start () {
-        black = transform.Find("Black").GetComponent<Text>();
-        white = transform.Find("White").GetComponent<Text>();
+
     }
 
     void Update () {
-        black.text = _numOfBlack.ToString();
-        white.text = _numOfWhite.ToString();
+
 	}
 
     public void Set(int x, int y, bool isBlack)

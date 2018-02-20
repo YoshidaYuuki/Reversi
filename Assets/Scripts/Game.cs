@@ -1,12 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
 
     private Logic logic;
     private Field field;
 
+	[SerializeField]
+	private Text countBlack = null;
+	[SerializeField]
+	private Text countWhite = null;
 
     private bool isBlack = true;
 
@@ -44,5 +49,8 @@ public class Game : MonoBehaviour {
         {
             logic.Clear();
         }
+        
+        countBlack.text = logic.numOfBlack.ToString();
+        countWhite.text = logic.numOfWhite.ToString();
 	}
 }

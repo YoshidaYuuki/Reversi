@@ -28,15 +28,15 @@ public class Spin : MonoBehaviour {
 
         if (isAnimated)
         {
-            time += Time.deltaTime * sign * speed;
+            time += Time.deltaTime * speed;
 
-            if (time >= 0.5f)
+            if (sign > 0 && time >= 0.5f)
             {
                 sign = -1;
                 stone.TurnAnimationEvent();
             }
 
-            if (time < 0.0f)
+            if (time >= 1.0f)
             {
                 FinalizeAnimation();
                 isAnimated = false;

@@ -36,17 +36,17 @@ public class Game : MonoBehaviour {
 
         turnUI.transform.position = new Vector3(turnUI.transform.position.x, 365.0f, turnUI.transform.position.z);
 
-        //transport = GameObject.Find("Network").GetComponent<TransportTCP>();
-        //if (transport.IsServer())
-        //{
-        //    isPlayerBlack = true;
-        //    Debug.Log("あなたは先行です");
-        //}
-        //else
-        //{
-        //    isPlayerBlack = false;
-        //    Debug.Log("あなたは後攻です");
-        //}
+        transport = GameObject.Find("Network").GetComponent<TransportTCP>();
+        if (transport.IsServer())
+        {
+            isPlayerBlack = true;
+            Debug.Log("あなたは先行です");
+        }
+        else
+        {
+            isPlayerBlack = false;
+            Debug.Log("あなたは後攻です");
+        }
     }
 
     void Update () {
@@ -101,21 +101,21 @@ public class Game : MonoBehaviour {
         {
             byte[] buffer = new byte[1400];
 
-            //int recvSize = transport.Receive(ref buffer, buffer.Length);
-            //if (recvSize > 0)
-            //{
-            //    string message = System.Text.Encoding.UTF8.GetString(buffer);
-            //    Debug.Log("Recv data:" + message);
+            int recvSize = transport.Receive(ref buffer, buffer.Length);
+            if (recvSize > 0)
+            {
+                string message = System.Text.Encoding.UTF8.GetString(buffer);
+                Debug.Log("Recv data:" + message);
 
-            //    if (!logic.Check(buffer[0], buffer[1], isBlack))
-            //    {
-            //        return;
+                if (!logic.Check(buffer[0], buffer[1], isBlack))
+                {
+                    return;
 
-            //    }
+                }
 
-            //    logic.SetStack(isBlack);
-            //    isChange = true;
-            //}
+                logic.SetStack(isBlack);
+                isChange = true;
+            }
         }
         
     }

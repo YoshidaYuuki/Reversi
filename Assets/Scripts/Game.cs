@@ -41,7 +41,12 @@ public class Game : MonoBehaviour {
 
             isChange = false;
         }
-        
+
+        if (logic.isFinish)
+        {
+            Debug.Log("FINISHED");
+        }
+
         countBlack.text = logic.numOfBlack.ToString();
         countWhite.text = logic.numOfWhite.ToString();
 	}

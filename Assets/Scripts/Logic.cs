@@ -19,6 +19,9 @@ public class Logic : MonoBehaviour {
     public int numOfWhite { get { return _numOfWhite; } }
     private int _numOfBlack, _numOfWhite;
 
+    public bool isFinish { get { return _isFinish; } }
+    private bool _isFinish = false;
+
 
     [SerializeField]
     private Field field = null;
@@ -47,7 +50,7 @@ public class Logic : MonoBehaviour {
 
     void Update () {
 
-	}
+    }
 
     public void Set(int x, int y, bool isBlack)
     {
@@ -65,6 +68,11 @@ public class Logic : MonoBehaviour {
 
     public void Set( int x, int y, bool isBlack, Vector3 axis, int depth = 0 )
     {
+        if (_numOfBlack + _numOfWhite >= c_sizeOfField * c_sizeOfField)
+        {
+            _isFinish = true;
+        }
+
         switch (fieldState[x, y])
         {
             case State.None:
@@ -154,6 +162,7 @@ public class Logic : MonoBehaviour {
     public void Clear()
     {
         _numOfWhite = _numOfBlack = 0;
+        _isFinish = false;
         fieldState.Initialize();
         field.ClearStone();
     }

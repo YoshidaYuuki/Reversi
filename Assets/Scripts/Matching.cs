@@ -37,13 +37,13 @@ public class Matching : MonoBehaviour {
                         
                         break;
                     }
-
             }
 
             Debug.Log(message);
             if(networkObj.GetComponent<TransportTCP>().IsConnected() == true)
             {
                 SceneManager.LoadScene("Game");
+                Debug.Log("JoinGame");
             }
         }
     }
@@ -59,7 +59,6 @@ public class Matching : MonoBehaviour {
     {
         transport.Connect(textBox.GetComponent<Text>().text, 25252);
         Debug.Log("connectadd" + textBox.GetComponent<Text>().text);
-        Debug.Log("connect");
 
         byte[] buffer = System.Text.Encoding.UTF8.GetBytes("connect");
         networkObj.GetComponent<TransportTCP>().Send(buffer, buffer.Length);

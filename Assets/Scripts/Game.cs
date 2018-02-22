@@ -9,7 +9,7 @@ public class Game : MonoBehaviour {
 
 
     private bool isBlack = true;
-
+    public GameObject turnUI;       // どちらのターンか表すUI
 
 	void Start () {
         logic = transform.Find("Logic").GetComponent<Logic>();
@@ -21,6 +21,7 @@ public class Game : MonoBehaviour {
         logic.Set(Logic.c_sizeOfField / 2, Logic.c_sizeOfField / 2 - 1, true);
         logic.Set(Logic.c_sizeOfField / 2 - 1, Logic.c_sizeOfField / 2, true);
         logic.Set(Logic.c_sizeOfField / 2, Logic.c_sizeOfField / 2, false);
+        turnUI.transform.position = new Vector3(turnUI.transform.position.x, 365.0f, turnUI.transform.position.z);
     }
 
     void Update () {
@@ -38,6 +39,16 @@ public class Game : MonoBehaviour {
             isBlack = !isBlack;
             Debug.Log("B/W = " + logic.numOfBlack + "/" + logic.numOfWhite);
             Debug.Log("NOW SIDE = " + (isBlack ? "BLACK" : "WHITE"));
+
+            // ターンUIの位置を変更
+            if(isBlack)
+            {
+                turnUI.transform.position = new Vector3(turnUI.transform.position.x, 365.0f, turnUI.transform.position.z);
+            }
+            else
+            {
+                turnUI.transform.position = new Vector3(turnUI.transform.position.x, 150.0f, turnUI.transform.position.z);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Backspace))

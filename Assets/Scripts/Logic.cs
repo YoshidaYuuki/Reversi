@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 // アルゴリズム
 public class Logic : MonoBehaviour {
@@ -13,29 +12,96 @@ public class Logic : MonoBehaviour {
         White
     };
 
+
     [SerializeField]
     public const int c_sizeOfField = 8;
-    [SerializeField]
-    private Field field;
+    public int numOfBlack { get { return _numOfBlack; } }
+    public int numOfWhite { get { return _numOfWhite; } }
+    private int _numOfBlack, _numOfWhite;
 
+
+    [SerializeField]
+    private Field field = null;
     private State[,] fieldState = new State[c_sizeOfField, c_sizeOfField];
 
+
+    public struct TurnStack
+    {
+        public int x, y;
+        public Vector3 axis;
+        public int distance;
+        public TurnStack( int x, int y, Vector3 axis, int distance = 0 )
+        {
+            this.x = x;
+            this.y = y;
+            this.axis = axis;
+            this.distance = distance;
+        }
+    }
+    private Stack<TurnStack> turnStack = new Stack<TurnStack>();
+
+
     void Start () {
+
     }
 
     void Update () {
-		
+
 	}
 
-    public void Set( int x, int y, bool isBlack )
+    public void Set(int x, int y, bool isBlack)
     {
+        if (fieldState[x, y] != State.None)
+        {
+            return;
+        }
+
+        _numOfBlack = isBlack ? _numOfBlack + 1 : _numOfBlack;
+        _numOfWhite = !isBlack ? _numOfWhite + 1 : _numOfWhite;
+
         fieldState[x, y] = isBlack ? State.Black : State.White;
         field.SetStone(x, y, isBlack);
     }
 
-    public bool CheckSet( int x, int y, bool isBlack )
+    public void Set( int x, int y, bool isBlack, Vector3 axis, int depth = 0 )
+    {
+        switch (fieldState[x, y])
+        {
+            case State.None:
+                Set(x, y, isBlack);
+                return;
+            case State.Black:
+                _numOfBlack--;
+                _numOfWhite++;
+                Debug.Assert(!isBlack, "チェックエラー");
+                break;
+            case State.White:
+                _numOfBlack++;
+                _numOfWhite--;
+                Debug.Assert(isBlack, "チェックエラー");
+                break;
+            default:
+                Debug.Assert(false, "ありえないステート");
+                break;
+        }
+
+        fieldState[x, y] = isBlack ? State.Black : State.White;
+        field.TurnStone(x, y, axis, depth);
+    }
+
+    public void SetStack( bool isBlack )
+    {
+        foreach(TurnStack t in turnStack)
+        {
+            Set(t.x, t.y, isBlack, t.axis, t.distance);
+        }
+    }
+
+    public bool Check( int x, int y, bool isBlack )
     {
         bool result = false;
+
+        turnStack.Clear();
 
         if (x < 0 || x >= c_sizeOfField) return false;
         if (y < 0 || y >= c_sizeOfField) return false;
@@ -52,7 +118,7 @@ public class Logic : MonoBehaviour {
 
         if (result)
         {
-            Set(x, y, isBlack);
+            turnStack.Push(new TurnStack(x, y, Vector3.zero));
         }
         return result;
     }
@@ -78,7 +144,7 @@ public class Logic : MonoBehaviour {
 
         if (Turn(x, y, ofsX, ofsY, count + 1, isBlack) == true)
         {
-            Set(x, y, isBlack);
+            turnStack.Push(new TurnStack(x, y, new Vector3( ofsX, -ofsY, 0 ).normalized, count));
             return true;
         }
 
@@ -87,6 +153,7 @@ public class Logic : MonoBehaviour {
 
     public void Clear()
     {
+        _numOfWhite = _numOfBlack = 0;
         fieldState.Initialize();
         field.ClearStone();
     }

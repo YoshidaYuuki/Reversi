@@ -9,12 +9,21 @@ public class Field : MonoBehaviour {
     public float width { get { return rectTransform.sizeDelta.x; } }
     public float height { get { return rectTransform.sizeDelta.y; } }
 
+
     [SerializeField]
-    private GameObject stonePrefab;
+    private GameObject stonePrefab = null;
+
 
     private GameObject[,] stone = new GameObject[Logic.c_sizeOfField, Logic.c_sizeOfField];
+
+
     private RectTransform rectTransform;
     private Vector2 canvasSize;
+
+
+    [SerializeField]
+    private float delayFrame = 0;
+
 
     private void Awake()
     {
@@ -33,18 +42,31 @@ public class Field : MonoBehaviour {
 
     }
 
-    public void SetStone( int x, int y, bool isBlack )
+    public void SetStone(int x, int y, bool isBlack)
     {
         GameObject g = stone[x, y];
 
         if (g == null)
         {
             g = Instantiate(stonePrefab, this.transform);
+            g.GetComponent<RectTransform>().localPosition = ToWorld(x, y);
+            g.GetComponent<Stone>().isBlack = isBlack;
+            stone[x, y] = g;
         }
+        else
+        {
+            g.GetComponent<Stone>().isBlack = isBlack;
+        }
+    }
 
-        g.GetComponent<RectTransform>().localPosition = ToWorld(x, y);
-        g.GetComponent<Stone>().isBlack = isBlack;
-        stone[x, y] = g;
+    public void TurnStone( int x, int y, Vector3 axis, int depth = 0)
+    {
+        GameObject g = stone[x, y];
+
+        if (g != null)
+        {
+            g.GetComponent<Stone>().Turn(axis, depth * delayFrame);
+        }
     }
 
     public void ClearStone()

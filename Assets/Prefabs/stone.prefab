@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 222799045022780496}
   - component: {fileID: 114912746373268666}
   - component: {fileID: 114056459049690510}
+  - component: {fileID: 114019300884432048}
   m_Layer: 5
   m_Name: stone
   m_TagString: Untagged
@@ -29,6 +30,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114019300884432048
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1311763422961284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07c25e0648afa204f9057ebe67330013, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angle: 90
+  distance: 20
+  speed: 2
 --- !u!114 &114056459049690510
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -82,7 +97,7 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1311763422961284}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
